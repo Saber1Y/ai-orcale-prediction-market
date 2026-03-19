@@ -3,15 +3,19 @@ pragma solidity ^0.8.33;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-// import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import  {console} from "forge-std/console.sol";
 
 error PleaseInputQuestion();
 error CreatedMarketMustBeInTheFuture();
+error InputedAmountMustBeGreaterThanZero();
+error CurrentMarketHasBeenResolved();
+error PassedDealine();
+error MarketDoesNotExist();
 
 
-contract PredictionMarket is Ownable, ReentrancyGuard {
+contract PredictionMarket is Ownable, ReentrancyGuard, IERC20, ERC20 {
     address public admin;
     IERC20 public usdc;
     uint256 platformFee = 200; // converted to 2% in sol
@@ -32,6 +36,7 @@ contract PredictionMarket is Ownable, ReentrancyGuard {
         uint256 totalNo;
         bool resolved; //market ended
         bool outcome; //results
+        uint256 createdAt;
     }
 
   constructor(address initialOwner, address _usdc) Ownable(initialOwner) {
@@ -47,10 +52,47 @@ contract PredictionMarket is Ownable, ReentrancyGuard {
     }
     console.log("Creating market, current count:", createdMarketsCount);
     createdMarketsCount++;
-    console.log("Market created, new count:", createdMarketsCount);
+    uint256 marketId = createdMarketsCount;
+    markets[marketId] = MarketDetails({
+        question: _question,
+        deadline: _deadline,
+        totalYes: 0,
+        totalNo: 0,
+   resolved: false, //market ended
+       outcome: false //results
+       createdAt: block,timestamp;
+    });
+    // console.log("Market created, new count:", createdMarketsCount);
     // market new = markets({
 
     // })
 
-  }
+  };
+
+function placeBet(uint256 marketId, bool  _prediction, uint256 _amount) public {
+    if (_amount == 0) {
+        revert InputedAmountMustBeGreaterThanZero();
+    }
+    if (markets[marketId].resolved) {
+        revert CurrentMarketHasBeenResolved();
+    }
+
+    if (block.timestamp < markets[marketId].deadline) {
+        revert PassedDealine();
+    }
+    if (marketId < createdMarketsCount) {
+        revert MarketDoesNotExist();
+    }
+    usdc.transferFrom(msg.sender, address(this), _amount);
+
+    //placing the actual bets
+    if (_prediction) {
+        yesBets[marketId][msg.sender] += _amount;
+        markets[marketId].totalYes += _amount;
+    } else {
+        noBets[marketId][msg.sender] += _amount;
+        markets[marketId].totalNo += _amount;
+    }
+}
+
 }
