@@ -14,7 +14,7 @@ contract testPredictionMarket is Test {
 
     function setUp() public {
         usdc = new MockUSDC();
-        market = new PredictionMarket(address, address(usdc));
+        market = new PredictionMarket(admin, address(usdc));
 
         usdc.mint(user1, 10000e6);
         usdc.mint(user2, 10000e6);
