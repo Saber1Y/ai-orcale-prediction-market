@@ -20,4 +20,8 @@ contract testPredictionMarket is Test {
         usdc.mint(user2, 10000e6);
         usdc.mint(user3, 10000e6);
     }
+
+    function test_CreatingMarkets() public {
+        market.createMarket()
+    }
 }

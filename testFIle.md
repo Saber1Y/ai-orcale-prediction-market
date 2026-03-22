@@ -2,3 +2,49 @@
 Arrange
 Act
 Assert
+
+
+First test coverage: 
+> Creating Markets (AdminOnly): 
+-> Admin can create markets succesfully
+-> Empty Question Reverts
+-> Past dealine reverts
+-> Non-Admin cannot create markets
+
+
+ // ============================================
+    // PLACE BET TESTS
+    // ============================================
+    
+    // TEST 5: Bet YES successfully
+    // TEST 6: Bet NO successfully
+    // TEST 7: Zero amount reverts
+    // TEST 8: Market resolved reverts
+    // TEST 9: Deadline passed reverts
+    // TEST 10: Market doesn't exist reverts
+    
+    // ============================================
+    // RESOLVE MARKET TESTS
+    // ============================================
+    
+    // TEST 11: Resolve after deadline succeeds
+    // TEST 12: Resolve before deadline reverts
+    // TEST 13: Already resolved reverts
+    // TEST 14: Non-admin cannot resolve
+    
+    // ============================================
+    // CLAIM REWARD TESTS
+    // ============================================
+    
+    // TEST 15: Winner claims reward
+    // TEST 16: Loser claims 0
+    // TEST 17: Already claimed reverts
+    // TEST 18: Unresolved market reverts
+    
+    // ============================================
+    // REFUND MARKET TESTS
+    // ============================================
+    
+    // TEST 19: Refund after 48h succeeds
+    // TEST 20: Refund before 48h reverts
+    // TEST 21: Already resolved reverts
