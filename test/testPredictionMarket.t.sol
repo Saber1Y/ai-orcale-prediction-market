@@ -31,4 +31,15 @@ contract testPredictionMarket is Test {
 
     assertEq(market.createdMarketsCount(), 1);
    }
+
+   function test_EmptyQuestionReverts() public {
+    string memory emptyQuestion = "";
+     uint256  deadline = block.timestamp + 2 days;
+
+     vm.prank(admin);
+
+     vm.expectRevert();
+     market.createMarket(emptyQuestion, deadline);
+   }
+
 }
