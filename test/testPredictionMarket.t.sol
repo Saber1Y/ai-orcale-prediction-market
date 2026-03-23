@@ -21,7 +21,14 @@ contract testPredictionMarket is Test {
         usdc.mint(user3, 10000e6);
     }
 
-    function test_CreatingMarkets() public {
-        market.createMarket()
-    }
+   function test_AdminCanCreateMarkets() public {
+ 
+    string memory question = "Will ETH surpass BTC in 2027?";
+    uint256  deadline = block.timestamp + 2 days;
+
+    vm.prank(admin);
+    market.createMarket(question, deadline);
+
+    assertEq(market.createdMarketsCount(), 1);
+   }
 }

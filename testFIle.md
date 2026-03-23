@@ -6,10 +6,10 @@ Assert
 
 First test coverage: 
 > Creating Markets (AdminOnly): 
--> Admin can create markets succesfully
--> Empty Question Reverts
--> Past dealine reverts
--> Non-Admin cannot create markets
+-[ ] Admin can create markets succesfully 
+-[ ]Empty Question Reverts
+-[ ] Past dealine reverts
+-[ ] Non-Admin cannot create markets
 
 
  // ============================================
