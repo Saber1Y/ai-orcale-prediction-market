@@ -42,4 +42,14 @@ contract testPredictionMarket is Test {
      market.createMarket(emptyQuestion, deadline);
    }
 
+   function test_PastDealineReverts() public {
+    string memory question = "Will ETH surpass BTC in 2027?";
+    uint256 pastDeadline = block.timestamp - 1;
+
+    vm.prank(admin);
+
+    vm.expectRevert();
+    market.createMarket(question, pastDeadline);
+   }
+
 }
